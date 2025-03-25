@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, LogOut, Home, Heart, Eye, Clock, MapPin } from 'lucide-react';
 
 function Header({ handleLogout, setIsLoggedIn, isLoggedIn }) {
@@ -11,6 +11,7 @@ function Header({ handleLogout, setIsLoggedIn, isLoggedIn }) {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
     const isUserLoggedIn = !!localStorage.getItem('token');
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         setSearchTerm(event.target.value);
@@ -21,7 +22,7 @@ function Header({ handleLogout, setIsLoggedIn, isLoggedIn }) {
         try {
             const response = await axios.post('https://backmovies-8saw.onrender.com/search', { query: searchTerm });
             const searchData = response.data;
-            window.location.href = `/search-results/${encodeURIComponent(JSON.stringify(searchData))}`;
+            navigate('/search-results', { state: { searchResults: searchData } })
         } catch (error) {
             console.error('Erreur lors de la recherche:', error);
         }

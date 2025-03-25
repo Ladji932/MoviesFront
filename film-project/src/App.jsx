@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Film from './components/film';
 import SignupForm from './components/SignupForm';
 import Home from './home';
@@ -11,8 +11,6 @@ import Voir from './components/Voir';
 import Map from './components/Map';
 import Header from './components/header';
 
-
-
 function App() {
   const [favoris, setFavoris] = useState(() => {
     const favorisFromStorage = localStorage.getItem('favoris');
@@ -20,7 +18,6 @@ function App() {
   });
 
   const [userLocation, setUserLocation] = useState(null);
-
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
 
   useEffect(() => {
@@ -52,22 +49,21 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div>
         <Header handleLogout={handleLogout} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
         <Routes>
-          <Route path='/login' element={<Home />} />
-          <Route path='/' element={<Film favoris={favoris} setFavoris={setFavoris} userLocation={userLocation}  setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
+          <Route path='/' element={<Film favoris={favoris} setFavoris={setFavoris} userLocation={userLocation} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />} />
           <Route path='/favoris' element={<Favoris favoris={favoris} />} />
           <Route path='/vus' element={<Vu />} />
           <Route path='/voir' element={<Voir />} />
           <Route path='/map' element={<Map userLocation={userLocation} />} />
-          <Route path='/search-results/:searchTerm' element={<SearchResult />} />
+          <Route path='/search-results' element={<SearchResult />} />
           <Route path='/inscription' element={<SignupForm />} />
           <Route path='/*' element={<Home />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
